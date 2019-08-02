@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { BasicInformationViewComponent} from '../basic-information-view/basic-information-view.component';
 import { BasicInformationFormHandler } from '../basic-information-form-handler';
-import { Subject, timer } from 'rxjs';
+import { Subject, timer, Observable } from 'rxjs';
 import { takeUntil, debounce } from 'rxjs/operators';
+
+import { BasicInformationStoreActions, BasicInformationStoreSelectors, BasicInformationStoreState } from '../../root-store';
+import { Store, select } from '@ngrx/store';
+import { BasicInformation } from 'src/app/models';
 
 @Component({
   selector: 'app-basic-information-shell',
@@ -13,23 +16,22 @@ export class BasicInformationShellComponent implements OnInit {
 
   private handler: BasicInformationFormHandler;
   private destroy$: Subject<boolean> = new Subject<boolean>();
+  basicInformation$: Observable<BasicInformation>;
 
-  initialState = {
-    brokerName: "Oliver the broker",
-    address: "99 Old Tom's Brewery"
-  };
-
-  constructor() { }
+  constructor(private store: Store<BasicInformationStoreState.State>) { }
 
   ngOnInit() { 
+    // dispatch the load action
+    this.store.dispatch(BasicInformationStoreActions.load());
 
+    this.basicInformation$ = this.store.pipe(select(BasicInformationStoreSelectors.selectBasicInformation));
   }
 
   initHandler(handler: BasicInformationFormHandler) {
     this.handler = handler;
     console.debug("The view component provided a reference to the form handler");
 
-    // Set up value change subscriptions
+    // Form hanlding subscriptions
     this.handler.formChanges$
       .pipe(
         debounce(() => timer(300)),
@@ -50,9 +52,6 @@ export class BasicInformationShellComponent implements OnInit {
         takeUntil(this.destroy$)
       )
       .subscribe(data => console.debug('Status:', data));
-    
-    // Populate the form from initial state.
-    this.handler.setFormData(this.initialState);
   }
 
   ngOnDestroy() {

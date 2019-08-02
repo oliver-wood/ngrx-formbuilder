@@ -1,2 +1,4 @@
 
-<app-basic-information-view (formLoad)="initHandler($event)"></app-basic-information-view>
+<app-basic-information-view
+    (formLoad)="initHandler($event)"
+    [formData]="basicInformation$ | async"></app-basic-information-view>

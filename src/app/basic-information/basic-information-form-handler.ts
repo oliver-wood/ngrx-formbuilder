@@ -1,7 +1,6 @@
 import { FormGroup } from '@angular/forms';
-import { Observable, Subscription, Subject, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
-// This needs to be a service I think
 export class BasicInformationFormHandler {
 
   public formChanges$: Observable<any>;
@@ -12,9 +11,5 @@ export class BasicInformationFormHandler {
     this.formChanges$ = formGroup.valueChanges;
     this.statusChanges$ = formGroup.statusChanges;
     this.addressChanges$ = formGroup.controls.address.valueChanges;
-  }
-
-  public setFormData(formData) {
-    this.formGroup.patchValue(formData);
   }
 }
