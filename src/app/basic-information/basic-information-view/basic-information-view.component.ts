@@ -11,19 +11,22 @@ import { BasicInformationFormHandler } from '../basic-information-form-handler';
 })
 export class BasicInformationViewComponent implements OnInit {
 
-  @Input() formData: any;
   @Output() formLoad: EventEmitter<BasicInformationFormHandler> = new EventEmitter<BasicInformationFormHandler>();
   
-  form: FormGroup;
+  public basicForm: FormGroup;
   formHandler: BasicInformationFormHandler;
   
-  constructor() { }
+  constructor() { 
+    const fb: BasicInformationFormBuilder = new BasicInformationFormBuilder();
+    this.basicForm = fb.build();
+  }
 
   ngOnInit() {
-    const fb: BasicInformationFormBuilder = new BasicInformationFormBuilder();
-    this.form = fb.build();
-
-    this.formHandler = new BasicInformationFormHandler(this.form);
+    this.formHandler = new BasicInformationFormHandler(this.basicForm);
     this.formLoad.emit(this.formHandler);
+  }
+
+  buttonClick(): void {
+    console.debug()
   }
 }

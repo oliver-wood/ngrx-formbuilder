@@ -1,10 +1,16 @@
-import { FormGroup, FormControl } from '@angular/forms'
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 
 export class BasicInformationFormBuilder {
 
+  private fb: FormBuilder = new FormBuilder();;
+
+  constructor() {
+  }
+
   public build(): FormGroup {
-    return new FormGroup({
-      brokerName: new FormControl('Broker Name')
+    return this.fb.group({
+      brokerName: [{ value: '', disabled: false }, [Validators.required]],
+      address: [{ value: '', disabled: false},[Validators.required]]
     });
   }
 }

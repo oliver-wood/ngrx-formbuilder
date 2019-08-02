@@ -1,1 +1,14 @@
-<p>basic-information-view works! - This is where the form is going to be displayed</p>
+<h3>Basic Information</h3>
+<form [formGroup]="basicForm">
+  <p>
+    <label>Broker Name:
+        <input type="text" formControlName="brokerName" /></label>
+  </p>
+  <p>
+    <label>Address:
+        <textarea formControlName="address"></textarea></label>
+  </p>
+  <p>
+      <button (click)="buttonClick">Next</button>
+  </p>
+</form>
